@@ -15,10 +15,3 @@ class Solution(object):
                 reversedStrind[idx] = reversedStack.pop()
 
         return  ''.join(reversedStrind)
-
-
-s = Solution()
-print s.reverseOnlyLetters("")
-print s.reverseOnlyLetters("a-bC-dEf-ghIj")
-print s.reverseOnlyLetters("Test1ng-Leet=code-Q!")
-print s.reverseOnlyLetters("12345=54321")

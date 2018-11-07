@@ -145,9 +145,64 @@ class BST(object):
             if node.right is not None:
                 nodes.append(node.right)
 
+    def delete(self, value):
+        self.root = self.delete_implementation(self.root, value)
+
+    def delete_implementation(self, node, value):
+
+        if not node:
+            return node
+
+        if node.value == value:
+            return self.delete_node_found(node)
+
+        node.left = self.delete_implementation(node.left, value)
+        node.right = self.delete_implementation(node.right, value)
+
+        return node
+
+
+    def delete_node_found(self, node):
+        nodeToReturn = None
+        if not node.left and not node.right:
+            pass
+        elif node.left and not node.right:
+            nodeToReturn = node.left
+        elif node.right and not node.left:
+            nodeToReturn = node.right
+        else:
+            parentNode = node
+            nodeToReturn = node.left
+            while nodeToReturn and nodeToReturn.right:
+                parentNode = nodeToReturn
+                nodeToReturn = nodeToReturn.right
+
+            parentNode.right = None
+            nodeToReturn.left = node.left
+            nodeToReturn.right = node.right
+
+        del node
+        return nodeToReturn
+
+
+
+
 a = -1
 
 bst = BST()
+bst.insert_recursive(12)
+bst.insert_recursive(5)
+bst.insert_recursive(7)
+bst.insert_recursive(3)
+bst.insert_recursive(1)
+bst.insert_recursive(9)
+bst.insert_recursive(8)
+bst.insert_recursive(11)
+bst.insert_recursive(14)
+bst.insert_recursive(13)
+bst.insert_recursive(17)
+bst.insert_recursive(20)
+bst.insert_recursive(18)
 
 while a != 0:
     print "Binary Search Tree"
@@ -161,6 +216,7 @@ while a != 0:
     print "8. Depth"
     print "9. Height"
     print "10. Breadth First"
+    print "11. Delete node"
     print "0. Exit"
     a = input("Choose an option: ")
 
@@ -184,5 +240,7 @@ while a != 0:
         print bst.height()
     if a == 10:
         bst.breadthFirst()
+    if a == 11:
+        bst.delete(input("Introduce node to delete: "))
 
 
