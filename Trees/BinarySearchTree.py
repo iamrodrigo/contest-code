@@ -153,39 +153,33 @@ class BST(object):
         if not node:
             return node
 
-        if node.value == value:
-            return self.delete_node_found(node)
+        if node.value > value:
+            node.left = self.delete_implementation(node.left, value)
+        elif node.value < value:
+            node.right = self.delete_implementation(node.right, value)
+        else:
+            tempNode = node
+            if not node.left and not node.right:
+                node = None
+            elif not node.right:
+                node = node.left
+            elif not node.left:
+                node = node.right
+            else:
+                parentNode = node
+                tempNode = node.left
+                while tempNode and tempNode.right:
+                    parentNode = tempNode
+                    tempNode = tempNode.right
 
-        node.left = self.delete_implementation(node.left, value)
-        node.right = self.delete_implementation(node.right, value)
+                parentNode.right = None
+                tempNode.left = node.left
+                tempNode.right = node.right
+                node , tempNode = tempNode, node
+
+            del tempNode
 
         return node
-
-
-    def delete_node_found(self, node):
-        nodeToReturn = None
-        if not node.left and not node.right:
-            pass
-        elif node.left and not node.right:
-            nodeToReturn = node.left
-        elif node.right and not node.left:
-            nodeToReturn = node.right
-        else:
-            parentNode = node
-            nodeToReturn = node.left
-            while nodeToReturn and nodeToReturn.right:
-                parentNode = nodeToReturn
-                nodeToReturn = nodeToReturn.right
-
-            parentNode.right = None
-            nodeToReturn.left = node.left
-            nodeToReturn.right = node.right
-
-        del node
-        return nodeToReturn
-
-
-
 
 a = -1
 
