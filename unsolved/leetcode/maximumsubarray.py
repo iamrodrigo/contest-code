@@ -13,4 +13,4 @@ def maxSubArray(nums):
 
     return max
 
-print maxSubArray([-1, -1])
+print maxSubArray([-5, -4, -3, -20, -10])

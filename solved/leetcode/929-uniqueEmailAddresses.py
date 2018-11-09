@@ -3,22 +3,14 @@ class Solution(object):
         totalEmails = set()
 
         for email in emails:
-            atFlag = False
-            addFlag = False
-            finalEmail = ''
-            for c in email:
-                if atFlag or c.isalpha() and not addFlag:
-                    finalEmail += c
-                elif c == '@':
-                    finalEmail += c
-                    atFlag = True
-                elif c == '+':
-                    addFlag = True
+            username, domain = email.split('@')
 
-            if finalEmail not in totalEmails:
-                totalEmails.add(finalEmail)
+            if '+' in username:
+                username = username[:username.index('+')].replace('.', '')
+
+            totalEmails.add(username + '@' + domain)
 
         return len(totalEmails)
 
 s = Solution()
-s.numUniqueEmails(["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"])
+print s.numUniqueEmails(["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"])

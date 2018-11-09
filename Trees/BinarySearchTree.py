@@ -114,13 +114,11 @@ class BST(object):
         print node.value,
 
     def depth(self):
-        return self.depth(self.root)
+        return self.depth_implementation(self.root)
 
     def depth_implementation(self, node):
-        if node is None:
-            return -1
-
-        return min(self.depth_implementation(node.left), self.depth_implementation(node.right)) + 1
+        pass
+        #reimplement
 
     def height(self):
         return self.height_implementation(self.root)
@@ -211,6 +209,8 @@ while a != 0:
     print "9. Height"
     print "10. Breadth First"
     print "11. Delete node"
+    print "12. Min"
+    print "13. Max"
     print "0. Exit"
     a = input("Choose an option: ")
 
