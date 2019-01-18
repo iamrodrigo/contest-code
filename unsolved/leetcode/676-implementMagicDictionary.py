@@ -45,6 +45,6 @@ obj = MagicDictionary()
 dict = ["hello","hallo","leetcode"]
 obj.buildDict(dict)
 print obj.search('hello')
-print obj.search('hallo')
-print obj.search('hhll')
+print obj.search('hhllo')
+print obj.search('hell')
 print obj.search('leetcoded')
