@@ -16,10 +16,12 @@ class AVL(object):
         left = node.left
         rightLeftChild = left.right
         node.left = rightLeftChild
+        node.height = self.retrace(node)
+        left.height = self.retrace(left)
         left.right = node
 
-        node.height = self.maxHeightOfChildren(node) + 1
-        left.height = self.maxHeightOfChildren(left) + 1
+
+        return left
 
     def rotateLeft(self, node):
         right = node.right
@@ -27,13 +29,35 @@ class AVL(object):
         node.right = leftRightChild
         right.left = node
 
-        node.height = self.maxHeightOfChildren(node) + 1
-        right.height = self.maxHeightOfChildren(right) + 1
+        node.height = self.retrace(node)
+        right.height = self.retrace(right)
 
-
+        return right
 
     def insert(self, value):
-        self.insert_implementation(self.root, value)
+        self.root = self.insert_implementation(self.root, value)
+
+    def balance(self, node):
+        balance = self.heightOfChildren(node)
+
+        if balance  > 1:
+            # Right Right
+            if self.height(node.right) >= 0:
+                self.rotateRight(node)
+            # Left Right
+            else:
+                node.left = self.rotateLeft(node.left)
+                node = self.rotateRight(node)
+        elif balance < -1:
+            # Left Left
+            if self.height(node.left) <= 0:
+                node = self.rotateLeft(node)
+            # Right Left
+            else:
+                node.right = self.rotateRight(node.right)
+                node = self.rotateLeft(node)
+
+        return node
 
     def insert_implementation(self, node, value):
         if not node:
@@ -43,35 +67,17 @@ class AVL(object):
         else:
             node.left = self.insert_implementation(node.left, value)
 
-        balance = self.heightOfChildren(node)
-
-        # Left Left
-        if balance > 1 and node.value > value:
-            node = self.rotateRight(node)
-        # Left right
-        elif balance > 1 and node.value < value:
-            node.left = self.rotateLeft(node.left)
-            node = self.rotateRight(node)
-        # Right Right
-        elif balance < -1 and node.right.value < value:
-            node = self.rotateLeft(node)
-        # Right Left
-        elif balance < -1 and node.right.value > value:
-            node.right = self.rotateRight(node.right)
-            node = self.rotateLeft(node)
-
-        node.height = self.maxHeightOfChildren(node.left) + 1
-
-        return node
+        node.height = self.retrace(node)
+        return self.balance(node)
 
     def height(self, node):
         return node.height if node else 0
 
+    def retrace(self, node):
+        return max(self.height(node.left), self.height(node.right)) + 1
+
     def heightOfChildren(self, node):
         return self.height(node.left) - self.height(node.right)
-
-    def maxHeightOfChildren(self, node):
-        return max(self.height(node.left), self.height(node.right))
 
     def search_recursive(self, value):
         return self.search_recursive_implementation(value, self.root)
@@ -188,11 +194,41 @@ class AVL(object):
 
             del tempNode
 
-        return node
+        node.height = self.retrace(node)
+        return self.balance(node)
 
 a = -1
 
 avl = AVL()
+#avl.insert(9)
+#avl.insert(1)
+#avl.insert(10)
+#avl.insert(0)
+#avl.insert(5)
+#avl.insert(11)
+#avl.insert(-1)
+#avl.insert(2)
+#avl.insert(6)
+
+
+"""
+0                   9
+                /         \
+1             1           10
+            /     \     /     \
+2          0       5  11      NULL    
+         /   \    /  \   
+3       -1  NULL  2    6
+"""
+
+# RR Insertion
+avl.insert(10) #A
+avl.insert(20) #Ar
+avl.insert(5)  #B
+avl.insert(7)  #Br
+avl.insert(3)  #C
+avl.insert(1)  #Cl, balance activated
+
 
 while a != 0:
     print "Binary Search Tree"
@@ -215,7 +251,8 @@ while a != 0:
     if a == 1:
         avl.insert(input("Introduce value to append: "))
     if a == 2:
-        avl.insert_iterative(input("Introduce value to append: "))
+        pass
+        #avl.insert_iterative(input("Introduce value to append: "))
     if a == 3:
         print 'YES' if avl.search_recursive(input("Introduce value to search: ")) else 'NO'
     if a == 4:

@@ -1,16 +1,19 @@
 from collections import Counter
 
 def oneWay(w1, w2):
-    w1Char = Counter(w1)
+    diff = 0
+    if len(w1) == len(w2):
+        for i in xrange(len(w1)):
+            if w1[i] != w2[i]:
+                diff += 1
+            if diff > 1:
+                return False
+    elif abs(len(w1) - len(w2)) > 1:
+        return False
+    else:
+        pass
 
-    for c in w2:
-        w1Char[c] = 1 if c not in w1Char else w1Char[c] - 1
-        if w1Char[c] == 0:
-            del w1Char[c]
 
-    diff = abs(len(w1) - len(w2))
-    lenW1Char = len(w1Char)
-
-    return True if (diff == 1 and lenW1Char == 1) or (not diff and lenW1Char == 2) else False
+    return True
 
 print oneWay(raw_input(), raw_input())
