@@ -1,6 +1,5 @@
 from collections import deque
 
-
 class Solution(object):
     def canVisitAllRooms(self, rooms):
         vertexList = [0] * len(rooms)
